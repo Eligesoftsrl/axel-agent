@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3ff0f7"/>
+      <stop offset="1" stop-color="#1e7fe0"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="0.5" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#0b3a7a"/>
+      <stop offset="1" stop-color="#021433"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-300%" width="200%" height="700%">
+      <feGaussianBlur stdDeviation="1.4"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <!-- busto -->
+  <path d="M9 64c1.5-10 8-15.5 17-16.5h12c9 1 15.5 6.5 17 16.5" fill="url(#g)" fill-opacity="0.18" stroke="url(#g)" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M28.5 40v7.5M35.5 40v7.5" stroke="url(#g)" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- testa: calotta liscia + volto a V -->
+  <path d="M32 6c8.3 0 13.5 5.6 13.5 13 0 3.6-1.1 6.4-2.9 9L35.3 39.3c-1.6 2.4-5 2.4-6.6 0L21.4 28c-1.8-2.6-2.9-5.4-2.9-9C18.5 11.6 23.7 6 32 6Z"
+        fill="url(#g)" fill-opacity="0.18" stroke="url(#g)" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- fascia luminosa -->
+  <rect x="21.5" y="17.6" width="21" height="3.4" rx="1.7" fill="#c8fdff" filter="url(#glow)"/>
+  <!-- cuore -->
+  <circle cx="32" cy="56" r="2.2" fill="#c8fdff" filter="url(#glow)"/>
+</svg>

@@ -1,0 +1,6 @@
+# Voce locale (facoltativa): riconoscimento vocale Whisper sul Mac.
+# Su Mac con chip Apple (M1/M2/M3/M4) basta mlx-whisper; altrimenti faster-whisper.
+mlx-whisper; sys_platform == "darwin" and platform_machine == "arm64"
+faster-whisper; sys_platform != "darwin" or platform_machine != "arm64"
+numpy
+av

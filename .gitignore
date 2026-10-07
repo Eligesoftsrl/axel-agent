@@ -1,0 +1,14 @@
+# dipendenze e build
+node_modules
+dist
+.venv
+__pycache__
+*.pyc
+
+# segreti e dati personali: non vanno MAI nel repository
+.env
+backend/data/*
+!backend/data/.gitkeep
+
+# macOS
+.DS_Store
