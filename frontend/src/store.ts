@@ -86,6 +86,8 @@ interface Store {
   outputs: { files: OutputFile[]; at: number } | null
   /** risultato di un compito in background aperto dall'utente */
   taskView: { title: string; text: string; status: string } | null
+  /** galleria foto aperta (AXEL si dissolve finché è aperta) */
+  gallery: { data: import('./ui/Gallery').GalleryData; at: number } | null
   set: (p: Partial<Store>) => void
   current: () => AgentConfig | undefined
 }
@@ -115,6 +117,7 @@ export const useStore = create<Store>((set, get) => ({
   drafts: [],
   outputs: null,
   taskView: null,
+  gallery: null,
   set: (p) => set(p),
   current: () => get().agents.find((a) => a.id === get().currentId),
 }))

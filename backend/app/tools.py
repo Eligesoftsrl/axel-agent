@@ -291,6 +291,22 @@ def mac_open(ctx: Ctx, target: str) -> str:
     return _mac(mac.open_target, target)
 
 
+def photos_show(ctx: Ctx, folder: str = "", query: str = "", limit: int = 120) -> str:
+    from . import photos
+
+    try:
+        g = photos.open_gallery(folder, query, limit)
+    except mac.MacError as e:
+        return str(e)
+    if not g["items"]:
+        return f"Nessuna immagine trovata in {g['path']}" + (f" per «{query}»" if query else "") + "."
+    if ctx.channel == "ui":
+        ctx.events.append({"type": "widget", "widget": "gallery", "data": g})
+        return (f"Galleria aperta: {len(g['items'])} immagini da {g['path']}. L'utente le sta già vedendo a schermo "
+                "(si scorrono con le frecce o dicendo 'avanti', 'indietro', 'chiudi'): rispondi con una frase breve.")
+    return f"Trovate {len(g['items'])} immagini in {g['path']} (la galleria si vede solo nell'app)."
+
+
 def youtube(ctx: Ctx, query: str = "", play: bool = False) -> str:
     return _mac(mac.youtube, query, play)
 
@@ -467,6 +483,10 @@ REGISTRY: dict[str, list[tuple[dict, Callable[..., str]]]] = {
         (_schema("mac_open_app", "Apre un'app sul Mac, opzionalmente su un file o una cartella (es. VS Code su un progetto).",
                  {"app": S, "path": {"type": "string", "description": "percorso, es. ~/React/axel-agent"}}, ["app"]), mac_open_app),
         (_schema("mac_open", "Apre un file, una cartella o un URL con l'app predefinita.", {"target": S}, ["target"]), mac_open),
+        (_schema("photos_show", "Mostra le foto/immagini di una cartella del Mac in una galleria a schermo (carosello). "
+                 "folder: percorso nella Home (vuoto = cartella Immagini); query: parole da cercare nei nomi di file e "
+                 "sottocartelle (es. 'lisbona 2024'). Per trovare prima la cartella giusta puoi usare mac_find_files.",
+                 {"folder": S, "query": S, "limit": {"type": "integer"}}), photos_show),
         (_schema("youtube", "Apre YouTube nel browser del Mac: senza query la home, con 'query' la ricerca. "
                  "play=true fa partire direttamente il primo video trovato (usalo per 'metti/fammi vedere/fai partire').",
                  {"query": S, "play": {"type": "boolean"}}), youtube),

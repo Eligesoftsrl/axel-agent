@@ -483,6 +483,30 @@ def bg_cancel(tid: str):
     return {"ok": background.cancel(tid)}
 
 
+# ---------- galleria foto ----------
+
+@app.get("/api/photos/{gid}/{idx}")
+def photo(gid: str, idx: int, size: int = 480):
+    from . import photos
+
+    res = photos.image(gid, idx, size)
+    if not res:
+        raise HTTPException(404, "immagine non disponibile")
+    path, ctype = res
+    return FileResponse(path, media_type=ctype, headers={"Cache-Control": "private, max-age=86400"})
+
+
+@app.post("/api/photos/open")
+async def photos_open(body: dict):
+    """Apre una galleria direttamente dall'interfaccia (senza passare da Claude)."""
+    from . import photos
+
+    try:
+        return await asyncio.to_thread(photos.open_gallery, str(body.get("folder", "")), str(body.get("query", "")), 200)
+    except mac.MacError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
 # ---------- documenti ----------
 
 @app.post("/api/upload")

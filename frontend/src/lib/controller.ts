@@ -94,8 +94,22 @@ export function stop() {
   useStore.getState().set({ state: 'idle' })
 }
 
+const GAL_NEXT = /^(?:axel[,\s]*)?(avanti|prossima|successiva|vai avanti|next|dopo|la prossima)[.!]?$/i
+const GAL_PREV = /^(?:axel[,\s]*)?(indietro|precedente|torna indietro|prima|quella prima)[.!]?$/i
+const GAL_CLOSE = /^(?:axel[,\s]*)?(chiudi|chiudi (?:la )?galleria|esci|basta(?: foto)?|ok basta)[.!]?$/i
+const GAL_PLAY = /^(?:axel[,\s]*)?(presentazione|fai partire|avvia (?:la )?presentazione|scorri da sol[ae])[.!]?$/i
+
 export async function send(text: string, attachments: import('../store').Attachment[] = []) {
   const s = useStore.getState()
+  // galleria aperta: "avanti", "indietro", "chiudi" la comandano direttamente (niente Claude, niente Spotify)
+  if (s.gallery && !attachments.length) {
+    const t = text.trim()
+    const { galleryNav } = await import('../ui/Gallery')
+    if (GAL_NEXT.test(t)) return galleryNav.go(1)
+    if (GAL_PREV.test(t)) return galleryNav.go(-1)
+    if (GAL_CLOSE.test(t)) return galleryNav.close()
+    if (GAL_PLAY.test(t)) return galleryNav.play()
+  }
   const agent = s.current()
   if ((!text.trim() && !attachments.length) || !agent) return
   if (!text.trim()) text = 'Analizza questo file e dimmi le cose importanti.'
@@ -132,11 +146,14 @@ export async function send(text: string, attachments: import('../store').Attachm
       } else if (ev.type === 'meta') {
         set({ lastModel: ev.model })
       } else if (ev.type === 'widget') {
-        if (ev.widget === 'spotify') {
+        if (ev.widget === 'gallery') {
+          set({ gallery: { data: ev.data, at: Date.now() } })
+          playNotify()
+        } else if (ev.widget === 'spotify') {
           gotMusic = true
           set({ music: { data: ev.data, at: Date.now() } })
         }
-        else set({ widget: { kind: ev.widget, data: ev.data, at: Date.now() } })
+        else set({ widget: { kind: ev.widget, data: ev.data as import('./api').WeatherData, at: Date.now() } })
         playNotify()
       } else if (ev.type === 'confirm') {
         live.pulse = 1

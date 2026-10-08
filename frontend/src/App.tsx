@@ -14,6 +14,7 @@ import { ConfirmCards, Toasts } from './ui/Overlays'
 import { WeatherHUD } from './ui/WeatherHUD'
 import { MailBubbles } from './ui/MailBubbles'
 import { SpotifyHUD } from './ui/SpotifyHUD'
+import { Gallery } from './ui/Gallery'
 import { ClipButton, DraftChips, DropZone, OutputsHUD, TaskViewHUD } from './ui/Attachments'
 
 const STATE_LABEL = {
@@ -137,6 +138,7 @@ export default function App() {
       <MailBubbles />
       <OutputsHUD />
       <TaskViewHUD />
+      <Gallery />
       <DropZone />
       <DraftChips />
 

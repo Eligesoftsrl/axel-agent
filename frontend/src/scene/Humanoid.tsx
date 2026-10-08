@@ -137,7 +137,9 @@ export function ParticleHumanoid({ position = [0, 0, 0] as [number, number, numb
     s.think += ((st === 'thinking' ? 1 : 0) - s.think) * k
     s.listen += ((st === 'listening' ? 1 : 0) - s.listen) * k
     s.level = live.level
-    s.reveal = Math.min(1, s.reveal + dt * 0.35)
+    // materializzazione: all'avvio e quando si chiude la galleria; dissoluzione quando la galleria è aperta
+    const hidden = !!useStore.getState().gallery
+    s.reveal = hidden ? Math.max(0, s.reveal - dt * 0.9) : Math.min(1, s.reveal + dt * 0.45)
 
     // sguardo: verso il cuore dati quando pensa, verso l'utente altrimenti
     const t = clock.elapsedTime
@@ -169,7 +171,7 @@ export function ParticleHumanoid({ position = [0, 0, 0] as [number, number, numb
     }
     if (heartRef.current) {
       const beat = Math.pow(Math.max(0, Math.sin(t * (st === 'thinking' ? 7 : 3.2))), 8)
-      heartRef.current.scale.setScalar(0.07 + beat * 0.025 + s.level * 0.03 + live.mailFlash * 0.06)
+      heartRef.current.scale.setScalar((0.07 + beat * 0.025 + s.level * 0.03 + live.mailFlash * 0.06) * (0.15 + 0.85 * s.reveal))
       heartRef.current.rotation.y += dt * 0.8
       heartRef.current.rotation.x += dt * 0.5
       ;(heartRef.current.material as THREE.MeshBasicMaterial).color

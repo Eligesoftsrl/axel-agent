@@ -203,6 +203,7 @@ export type StreamEvent =
   | { type: 'confirm'; action: PendingAction }
   | { type: 'widget'; widget: 'weather'; data: WeatherData }
   | { type: 'widget'; widget: 'spotify'; data: SpotifyData }
+  | { type: 'widget'; widget: 'gallery'; data: import('../ui/Gallery').GalleryData }
 
 /** POST /api/chat e legge lo stream SSE evento per evento. */
 export async function* streamChat(

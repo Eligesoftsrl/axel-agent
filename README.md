@@ -305,6 +305,21 @@ scadenze, pagamenti e sicurezza. Puoi indicare:
 sito** (es. `ilmattino.it`): AXEL trova il feed, ne prende il nome e lo aggiunge come pulsante accanto ad
 ANSA, Il Post… Tocca il pulsante per attivarlo/disattivarlo, la × per eliminarlo.
 
+## Guida 12 · Galleria foto
+
+*"Axel, fammi vedere le foto della cartella Lisbona"*, *"mostrami le immagini sulla Scrivania"*: AXEL si
+dissolve in particelle e le foto compaiono in un carosello 3D (stile Cover Flow) con card olografiche.
+Si scorre con le frecce, la rotella, trascinando, o a voce: **"avanti"**, **"indietro"**, **"presentazione"**,
+**"chiudi"**. Invio (o clic sulla foto centrale) ingrandisce, spazio avvia la presentazione, Esc chiude: alla
+chiusura AXEL si ricompone.
+- Cartelle: qualsiasi cartella nella tua Home (di default Immagini), anche le sottocartelle; AXEL può filtrare
+  per nome ("le foto del 2024", "quelle di Napoli").
+- Le foto HEIC dell'iPhone vengono convertite al volo con `sips` (incluso in macOS); le anteprime restano in
+  cache in `backend/data/thumbs`.
+- Google Foto: dal 2025 Google non permette più alle app di leggere tutta la libreria (solo foto scelte a mano
+  in una finestra Google). Amazon Photos non ha un'API pubblica. La libreria di **Foto di Apple** (con iCloud)
+  si può collegare in un prossimo passo.
+
 ## Velocità e consumi
 
 In **Integrazioni → Voce e velocità**:
